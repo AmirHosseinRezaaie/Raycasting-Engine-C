@@ -1,18 +1,19 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99
-LDFLAGS = -lraylib -lm
+INCLUDES = -I D:\Program Files\raylib-5.5_win64_mingw-w64\raylib-5.5_win64_mingw-w64\include
+LIBS = -L D:\Program Files\raylib-5.5_win64_mingw-w64\raylib-5.5_win64_mingw-w64\lib -lraylib -lopengl32 -lgdi32 -lwinmm
 
-SOURCES = main.c raycaster.c map.c player.c
+SOURCES = main.c map.c player.c raycaster.c
 OBJECTS = $(SOURCES:.c=.o)
-EXECUTABLE = raycaster
+EXEC = raycaster.exe
 
-all: $(EXECUTABLE)
+all: $(EXEC)
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
+$(EXEC): $(OBJECTS)
+	$(CC) $(OBJECTS) -o $(EXEC) $(LIBS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS) $(EXECUTABLE)
+	del $(OBJECTS) $(EXEC) 2>nul
