@@ -3,12 +3,9 @@
 
 #define MAP_WIDTH  24
 #define MAP_HEIGHT 24
-#define TILE_SIZE 32
 
-extern int world_map[MAP_HEIGHT][MAP_WIDTH];
-
-void init_map(void);
-void draw_minimap(void);
-int is_wall(int x, int y);
+// This is a 2D array that represents the world map
+// 0 = empty space, 1+ = wall
+extern int world_map[MAP_WIDTH][MAP_HEIGHT];
 
 #endif
