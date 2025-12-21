@@ -17,3 +17,17 @@ $(EXEC): $(OBJECTS)
 
 clean:
 	del $(OBJECTS) $(EXEC) 2>nul
+
+# Makefile
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c99
+LIBS = -lraylib -lm
+
+SOURCES = main.c player.c map.c
+EXEC = raycaster
+
+all:
+	$(CC) $(SOURCES) -o $(EXEC) $(CFLAGS) $(LIBS)
+
+clean:
+	rm -f $(EXEC)
