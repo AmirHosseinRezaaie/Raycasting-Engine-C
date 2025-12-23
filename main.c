@@ -3,6 +3,7 @@
 #include "constants.h"
 #include "map.h"
 #include "player.h"
+#include <math.h>
 
 int main(void)
 {
@@ -62,24 +63,24 @@ int main(void)
             {
                 // Rotate direction (clockwise)
                 float old_dir_x = player_dir[0];
-                player_dir[0] = player_dir[0] * Cos(-rot_speed) - player_dir[1] * Sin(-rot_speed);
-                player_dir[1] = old_dir_x * Sin(-rot_speed) + player_dir[1] * Cos(-rot_speed);
+                player_dir[0] = player_dir[0] * cos(-rot_speed) - player_dir[1] * sin(-rot_speed);
+                player_dir[1] = old_dir_x * sin(-rot_speed) + player_dir[1] * cos(-rot_speed);
 
                 // Rotate plane too
                 float old_plane_x = player_plane[0];
-                player_plane[0] = player_plane[0] * Cos(-rot_speed) - player_plane[1] * Sin(-rot_speed);
-                player_plane[1] = old_plane_x * Sin(-rot_speed) + player_plane[1] * Cos(-rot_speed);
+                player_plane[0] = player_plane[0] * cos(-rot_speed) - player_plane[1] * sin(-rot_speed);
+                player_plane[1] = old_plane_x * sin(-rot_speed) + player_plane[1] * cos(-rot_speed);
             }
             if (IsKeyDown(KEY_LEFT))
             {
                 // Rotate direction (counter-clockwise)
                 float old_dir_x = player_dir[0];
-                player_dir[0] = player_dir[0] * Cos(rot_speed) - player_dir[1] * Sin(rot_speed);
-                player_dir[1] = old_dir_x * Sin(rot_speed) + player_dir[1] * Cos(rot_speed);
+                player_dir[0] = player_dir[0] * cos(rot_speed) - player_dir[1] * sin(rot_speed);
+                player_dir[1] = old_dir_x * sin(rot_speed) + player_dir[1] * cos(rot_speed);
 
                 float old_plane_x = player_plane[0];
-                player_plane[0] = player_plane[0] * Cos(rot_speed) - player_plane[1] * Sin(rot_speed);
-                player_plane[1] = old_plane_x * Sin(rot_speed) + player_plane[1] * Cos(rot_speed);
+                player_plane[0] = player_plane[0] * cos(rot_speed) - player_plane[1] * sin(rot_speed);
+                player_plane[1] = old_plane_x * sin(rot_speed) + player_plane[1] * cos(rot_speed);
             }
         }
 
