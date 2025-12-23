@@ -83,6 +83,39 @@ int main(void)
                 player_plane[1] = old_plane_x * sin(rot_speed) + player_plane[1] * cos(rot_speed);
             }
         }
+        // Mouse editing in EDIT mode
+        // We only edit the map when in edit mode
+        if (game_state == STATE_EDIT)
+        {
+            // Check if left or right mouse button is pressed (only once per click)
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+            {
+                // Get mouse position on screen
+                int mouse_x = GetMouseX();
+                int mouse_y = GetMouseY();
+
+                // Convert pixel position to map grid index
+                // We use integer division to find which cell the mouse is over
+                int map_x = mouse_x / TILE_SIZE;
+                int map_y = mouse_y / TILE_SIZE;
+
+                // Check if the map index is valid (inside the map bounds)
+                // This prevents crash if mouse is outside the map
+                if (map_x >= 0 && map_x < MAP_WIDTH && map_y >= 0 && map_y < MAP_HEIGHT)
+                {
+                    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+                    {
+                        // Left click: place wall (set to 1)
+                        world_map[map_x][map_y] = 1;
+                    }
+                    else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+                    {
+                        // Right click: remove wall (set to 0)
+                        world_map[map_x][map_y] = 0;
+                    }
+                }
+            }
+        }
 
         // ----- Drawing -----
         BeginDrawing();
@@ -116,6 +149,29 @@ int main(void)
             int player_screen_x = (int)(player_pos[0] * TILE_SIZE);
             int player_screen_y = (int)(player_pos[1] * TILE_SIZE);
             DrawCircle(player_screen_x, player_screen_y, 8, RED);
+
+            // Highlight cell under mouse
+            // This helps user see which cell they are clicking
+            int mouse_x = GetMouseX();
+            int mouse_y = GetMouseY();
+            int highlight_map_x = mouse_x / TILE_SIZE;
+            int highlight_map_y = mouse_y / TILE_SIZE;
+
+            // Only highlight if mouse is over a valid cell
+            if (highlight_map_x >= 0 && highlight_map_x < MAP_WIDTH &&
+                highlight_map_y >= 0 && highlight_map_y < MAP_HEIGHT)
+            {
+                int highlight_screen_x = highlight_map_x * TILE_SIZE;
+                int highlight_screen_y = highlight_map_y * TILE_SIZE;
+                // Draw yellow border around the cell
+                DrawRectangleLines(highlight_screen_x, highlight_screen_y, TILE_SIZE, TILE_SIZE, YELLOW);
+            }
+
+            // ----- Show instructions in edit mode -----
+            DrawText("EDIT MODE", 10, 10, 30, YELLOW);
+            DrawText("Left Click: Place Wall", 10, 50, 20, GREEN);
+            DrawText("Right Click: Remove Wall", 10, 80, 20, RED);
+            DrawText("Press M to return to PLAY mode", 10, 110, 20, WHITE);
         }
         else
         {
