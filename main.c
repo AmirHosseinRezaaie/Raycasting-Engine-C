@@ -106,6 +106,11 @@ int main(void)
                 }
             }
         }
+        // Clamp player position to map bounds
+        if (player_pos[0] < 0.1f) player_pos[0] = 0.1f;
+        if (player_pos[0] > MAP_WIDTH - 1.1f) player_pos[0] = MAP_WIDTH - 1.1f;
+        if (player_pos[1] < 0.1f) player_pos[1] = 0.1f;
+        if (player_pos[1] > MAP_HEIGHT - 1.1f) player_pos[1] = MAP_HEIGHT - 1.1f;
 
         // Drawing
         BeginDrawing();
