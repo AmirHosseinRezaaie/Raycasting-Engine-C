@@ -64,6 +64,29 @@ int main(void)
                 player_plane[0] = player_plane[0] * cos(rot_speed) - player_plane[1] * sin(rot_speed);
                 player_plane[1] = old_plane_x * sin(rot_speed) + player_plane[1] * cos(rot_speed);
             }
+            // Strafe Right (D)
+            if (IsKeyDown(KEY_D))
+            {
+                float perp_x = -player_dir[1];
+                float perp_y = player_dir[0];
+                float new_x = player_pos[0] + perp_x * move_speed;
+                float new_y = player_pos[1] + perp_y * move_speed;
+
+                if (world_map[(int)new_x][(int)player_pos[1]] == 0) player_pos[0] = new_x;
+                if (world_map[(int)player_pos[0]][(int)new_y] == 0) player_pos[1] = new_y;
+            }
+
+            // Strafe Left (A)
+            if (IsKeyDown(KEY_A))
+            {
+                float perp_x = player_dir[1];
+                float perp_y = -player_dir[0];
+                float new_x = player_pos[0] + perp_x * move_speed;
+                float new_y = player_pos[1] + perp_y * move_speed;
+
+                if (world_map[(int)new_x][(int)player_pos[1]] == 0) player_pos[0] = new_x;
+                if (world_map[(int)player_pos[0]][(int)new_y] == 0) player_pos[1] = new_y;
+            }
         }
 
         // Mouse editing in edit mode
@@ -78,10 +101,8 @@ int main(void)
 
                 if (map_x >= 0 && map_x < MAP_WIDTH && map_y >= 0 && map_y < MAP_HEIGHT)
                 {
-                    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-                        world_map[map_x][map_y] = 1;   // Place wall
-                    else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
-                        world_map[map_x][map_y] = 0;   // Remove wall
+                    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) world_map[map_x][map_y] = 1;   // Place wall
+                    else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) world_map[map_x][map_y] = 0;   // Remove wall
                 }
             }
         }
