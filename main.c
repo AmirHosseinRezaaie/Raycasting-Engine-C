@@ -129,6 +129,11 @@ int main(void)
             // Draw player
             DrawCircle((int)(player_pos[0] * TILE_SIZE), (int)(player_pos[1] * TILE_SIZE), 8, RED);
 
+            // Draw player direction
+            Vector2 player_screen = {(int)(player_pos[0] * TILE_SIZE), (int)(player_pos[1] * TILE_SIZE)};
+            Vector2 dir_end = {player_screen.x + player_dir[0] * 30, player_screen.y + player_dir[1] * 30};
+            DrawLineV(player_screen, dir_end, RED);
+
             // Highlight cell under mouse
             int mx = GetMouseX() / TILE_SIZE;
             int my = GetMouseY() / TILE_SIZE;
