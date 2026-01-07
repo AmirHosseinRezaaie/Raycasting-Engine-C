@@ -1,8 +1,9 @@
 // main.c
-#include "raylib.h"
+#include <raylib.h>
 #include "constants.h"
 #include "map.h"
 #include "player.h"
+#include "raycaster.h"
 #include <math.h>
 
 int main(void)

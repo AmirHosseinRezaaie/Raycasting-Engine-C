@@ -5,10 +5,10 @@ CC = gcc
 CFLAGS = -Wall -Wextra -std=c99
 
 # Path to raylib headers
-INCLUDES = -I "D:\Program Files\raylib-5.5_win64_mingw-w64\raylib-5.5_win64_mingw-w64\include"
+INCLUDES = -I "C:\raylib\include"
 
 # Path to raylib library and required Windows libs
-LIBS = -L "D:\Program Files\raylib-5.5_win64_mingw-w64\raylib-5.5_win64_mingw-w64\lib" -lraylib -lopengl32 -lgdi32 -lwinmm -lm
+LIBS = -L "C:\raylib\lib" -lraylib -lopengl32 -lgdi32 -lwinmm -lm -lmsvcrt
 
 # Source files
 SOURCES = main.c map.c player.c raycaster.c
