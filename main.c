@@ -155,10 +155,9 @@ int main(void)
         }
         else
         {
-            DrawText("PLAY MODE - Ready for 3D Raycasting", 10, 10, 20, GREEN);
-            DrawText("Press M for EDIT mode", 10, 40, 20, YELLOW);
-            // Draw player in PLAY mode for debugging
-            DrawCircle((int)(player_pos[0] * TILE_SIZE / 4), (int)(player_pos[1] * TILE_SIZE / 4) + SCREEN_HEIGHT - 150, 4, RED);
+            render_raycast_scene();
+            
+            DrawText("WASD: Move | Arrows: Rotate | M: Edit", 10, 40, 16, YELLOW);
         }
 
         // Current mode indicator
