@@ -1,3 +1,4 @@
+// raycaster.c
 #include "raycaster.h"
 #include "constants.h"
 #include "player.h"
@@ -50,15 +51,36 @@ void render_raycast_scene(void)
             sideDistY = (mapY + 1.0f - player_pos[1]) * deltaDistY;
         }
 
+        int hit = 0;
+        int side;
+
+        while (hit == 0)
+        {
+            if (sideDistX < sideDistY)
+            {
+                sideDistX += deltaDistX;
+                mapX += stepX;
+                side = 0;
+            }
+            else
+            {
+                sideDistY += deltaDistY;
+                mapY += stepY;
+                side = 1;
+            }
+
+            if (world_map[mapX][mapY] > 0)
+            {
+                hit = 1;
+            }
+        }
+
         if (x == SCREEN_WIDTH / 2)
         {
-            printf("DDA Init: mapX=%d, mapY=%d, stepX=%d, stepY=%d\n", 
-                   mapX, mapY, stepX, stepY);
-            printf("          deltaDistX=%.3f, deltaDistY=%.3f\n",
-                   deltaDistX, deltaDistY);
+            printf("Wall hit: [%d,%d] side=%d\n", mapX, mapY, side);
             DrawLine(x, 0, x, SCREEN_HEIGHT, RED);
         }
     }
 
-    DrawText("Task 2: DDA variables initialized", 10, 10, 20, GREEN);
+    DrawText("Task 3: DDA loop - wall detection", 10, 10, 20, GREEN);
 }
