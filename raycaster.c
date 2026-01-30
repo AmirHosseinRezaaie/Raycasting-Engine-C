@@ -8,8 +8,8 @@
 
 void render_raycast_scene(void)
 {
-    DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2, DARKGRAY);
-    DrawRectangle(0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2, GRAY);
+    DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2, (Color){135, 206, 235, 255});
+    DrawRectangle(0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2, (Color){34, 139, 34, 255});
 
     for (int x = 0; x < SCREEN_WIDTH; x++)
     {
@@ -103,16 +103,16 @@ void render_raycast_scene(void)
         Color wallColor;
         if (side == 1)
         {
-            wallColor = DARKBLUE;
+            wallColor = (Color){101, 67, 33, 255};
         }
         else
         {
-            wallColor = BLUE;
+            wallColor = (Color){160, 82, 45, 255};
         }
 
         DrawLine(x, drawStart, x, drawEnd, wallColor);
 
     }
 
-    DrawText("Task 5: 3D walls rendered!", 10, 10, 20, GREEN);
+    DrawText("Task 6: Beautiful colors!", 10, 10, 20, WHITE);
 }
