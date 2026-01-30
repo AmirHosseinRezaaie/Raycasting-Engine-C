@@ -32,27 +32,27 @@ void render_raycast_scene(void)
         if (rayDirX < 0)
         {
             stepX = -1;
-            sideDistX = (player_pos[0] - mapX) * deltaDistX;
+            sideDistX = (player_pos[0] - (float)mapX) * deltaDistX;
         }
         else
         {
             stepX = 1;
-            sideDistX = (mapX + 1.0f - player_pos[0]) * deltaDistX;
+            sideDistX = ((float)mapX + 1.0f - player_pos[0]) * deltaDistX;
         }
 
         if (rayDirY < 0)
         {
             stepY = -1;
-            sideDistY = (player_pos[1] - mapY) * deltaDistY;
+            sideDistY = (player_pos[1] - (float)mapY) * deltaDistY;
         }
         else
         {
             stepY = 1;
-            sideDistY = (mapY + 1.0f - player_pos[1]) * deltaDistY;
+            sideDistY = ((float)mapY + 1.0f - player_pos[1]) * deltaDistY;
         }
 
         int hit = 0;
-        int side;
+        int side = 0;
 
         while (hit == 0)
         {
@@ -75,12 +75,24 @@ void render_raycast_scene(void)
             }
         }
 
+        float perpWallDist;
+        
+        if (side == 0)
+        {
+            perpWallDist = (sideDistX - deltaDistX);
+        }
+        else
+        {
+            perpWallDist = (sideDistY - deltaDistY);
+        }
+
         if (x == SCREEN_WIDTH / 2)
         {
-            printf("Wall hit: [%d,%d] side=%d\n", mapX, mapY, side);
+            printf("Wall: [%d,%d] side=%d dist=%.3f\n", 
+                   mapX, mapY, side, perpWallDist);
             DrawLine(x, 0, x, SCREEN_HEIGHT, RED);
         }
     }
 
-    DrawText("Task 3: DDA loop - wall detection", 10, 10, 20, GREEN);
+    DrawText("Task 4: Perpendicular distance (no fisheye)", 10, 10, 20, GREEN);
 }
