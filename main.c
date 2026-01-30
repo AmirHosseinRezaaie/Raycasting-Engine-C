@@ -68,8 +68,8 @@ int main(void)
             // Strafe Right (D)
             if (IsKeyDown(KEY_D))
             {
-                float perp_x = -player_dir[1];
-                float perp_y = player_dir[0];
+                float perp_x = player_dir[1];
+                float perp_y = -player_dir[0];
                 float new_x = player_pos[0] + perp_x * move_speed;
                 float new_y = player_pos[1] + perp_y * move_speed;
 
@@ -80,8 +80,8 @@ int main(void)
             // Strafe Left (A)
             if (IsKeyDown(KEY_A))
             {
-                float perp_x = player_dir[1];
-                float perp_y = -player_dir[0];
+                float perp_x = -player_dir[1];
+                float perp_y = player_dir[0];
                 float new_x = player_pos[0] + perp_x * move_speed;
                 float new_y = player_pos[1] + perp_y * move_speed;
 

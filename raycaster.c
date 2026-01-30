@@ -86,13 +86,33 @@ void render_raycast_scene(void)
             perpWallDist = (sideDistY - deltaDistY);
         }
 
-        if (x == SCREEN_WIDTH / 2)
+        int lineHeight = (int)(SCREEN_HEIGHT / perpWallDist);
+
+        int drawStart = -lineHeight / 2 + SCREEN_HEIGHT / 2;
+        if (drawStart < 0)
         {
-            printf("Wall: [%d,%d] side=%d dist=%.3f\n", 
-                   mapX, mapY, side, perpWallDist);
-            DrawLine(x, 0, x, SCREEN_HEIGHT, RED);
+            drawStart = 0;
         }
+
+        int drawEnd = lineHeight / 2 + SCREEN_HEIGHT / 2;
+        if (drawEnd >= SCREEN_HEIGHT)
+        {
+            drawEnd = SCREEN_HEIGHT - 1;
+        }
+
+        Color wallColor;
+        if (side == 1)
+        {
+            wallColor = DARKBLUE;
+        }
+        else
+        {
+            wallColor = BLUE;
+        }
+
+        DrawLine(x, drawStart, x, drawEnd, wallColor);
+
     }
 
-    DrawText("Task 4: Perpendicular distance (no fisheye)", 10, 10, 20, GREEN);
+    DrawText("Task 5: 3D walls rendered!", 10, 10, 20, GREEN);
 }
