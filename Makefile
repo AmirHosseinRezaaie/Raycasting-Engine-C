@@ -11,7 +11,7 @@ INCLUDES = -I "C:\raylib\include"
 LIBS = -L "C:\raylib\lib" -lraylib -lopengl32 -lgdi32 -lwinmm -lm -lmsvcrt
 
 # Source files
-SOURCES = main.c map.c player.c raycaster.c
+SOURCES = main.c map.c player.c raycaster.c map_io.c
 
 # Object files (auto generated from sources)
 OBJECTS = $(SOURCES:.c=.o)

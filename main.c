@@ -1,9 +1,9 @@
-// main.c
-#include <raylib.h>
+#include "raylib.h"
 #include "constants.h"
 #include "map.h"
 #include "player.h"
 #include "raycaster.h"
+#include "map_io.h"
 #include <math.h>
 
 int main(void)
@@ -88,18 +88,46 @@ int main(void)
                 if (world_map[(int)new_x][(int)player_pos[1]] == 0) player_pos[0] = new_x;
                 if (world_map[(int)player_pos[0]][(int)new_y] == 0) player_pos[1] = new_y;
             }
+            
+            
         }
-
+        
         // Mouse editing in edit mode
         if (game_state == STATE_EDIT)
         {
+            // Save map with F5
+            if (IsKeyPressed(KEY_F5))
+            {
+                if (save_map("custom_map.txt"))
+                {
+                    printf("Map saved successfully!\n");
+                }
+                else
+                {
+                    printf("Failed to save map!\n");
+                }
+            }
+    
+            // Load map with F9
+            if (IsKeyPressed(KEY_F9))
+            {
+                if (load_map("custom_map.txt"))
+                {
+                    printf("Map loaded successfully!\n");
+                }
+                else
+                {
+                    printf("Failed to load map!\n");
+                }
+            }
+            
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
             {
                 int mouse_x = GetMouseX();
                 int mouse_y = GetMouseY();
                 int map_x = mouse_x / TILE_SIZE;
                 int map_y = mouse_y / TILE_SIZE;
-
+                
                 if (map_x >= 0 && map_x < MAP_WIDTH && map_y >= 0 && map_y < MAP_HEIGHT)
                 {
                     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) world_map[map_x][map_y] = 1;   // Place wall
@@ -153,7 +181,9 @@ int main(void)
             DrawText("Left Click: Place Wall", 10, 50, 20, GREEN);
             DrawText("Right Click: Remove Wall", 10, 80, 20, RED);
             DrawText("M: PLAY mode", 10, 110, 20, RED);
+            DrawText("F5: Save | F9: Load", 10, 140, 20, SKYBLUE);
         }
+
         else
         {
             render_raycast_scene();
