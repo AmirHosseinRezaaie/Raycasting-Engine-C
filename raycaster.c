@@ -100,14 +100,29 @@ void render_raycast_scene(void)
             drawEnd = SCREEN_HEIGHT - 1;
         }
 
+        // Calculate brightness based on distance (0.3 to 1.0)
+        float brightness = 1.0f / (1.0f + perpWallDist * 0.05f);
+        if (brightness < 0.3f) brightness = 0.3f;
+        if (brightness > 1.0f) brightness = 1.0f;
+        
         Color wallColor;
         if (side == 1)
         {
-            wallColor = (Color){101, 67, 33, 255};
+            wallColor = (Color){
+                (unsigned char)(101 * brightness),
+                (unsigned char)(67 * brightness),
+                (unsigned char)(33 * brightness),
+                255
+            };
         }
         else
         {
-            wallColor = (Color){160, 82, 45, 255};
+            wallColor = (Color){
+                (unsigned char)(160 * brightness),
+                (unsigned char)(82 * brightness),
+                (unsigned char)(45 * brightness),
+                255
+            };
         }
 
         DrawLine(x, drawStart, x, drawEnd, wallColor);
