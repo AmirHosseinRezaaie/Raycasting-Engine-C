@@ -152,7 +152,7 @@ int main(void)
             DrawText("EDIT MODE", 10, 10, 30, YELLOW);
             DrawText("Left Click: Place Wall", 10, 50, 20, GREEN);
             DrawText("Right Click: Remove Wall", 10, 80, 20, RED);
-            DrawText("M: PLAY mode", 10, 110, 20, WHITE);
+            DrawText("M: PLAY mode", 10, 110, 20, RED);
         }
         else
         {
