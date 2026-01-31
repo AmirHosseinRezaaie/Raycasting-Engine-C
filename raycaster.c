@@ -129,5 +129,4 @@ void render_raycast_scene(void)
 
     }
 
-    DrawText("Task 6: Beautiful colors!", 10, 10, 20, WHITE);
 }

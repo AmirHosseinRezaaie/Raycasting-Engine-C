@@ -184,11 +184,44 @@ int main(void)
             DrawText("F5: Save | F9: Load", 10, 140, 20, SKYBLUE);
         }
 
-        else
+        else  // STATE_PLAY
         {
             render_raycast_scene();
             
-            DrawText("WASD: Move | Arrows: Rotate | M: Edit", 10, 40, 16, YELLOW);
+            DrawText("W A S D: Move | Arrows: Rotate | M: Edit", 10, 10, 20, YELLOW);
+            
+            // ===== MINI-MAP (Bottom-Right Corner) =====
+            int minimap_size = 4;
+            int minimap_offset_x = SCREEN_WIDTH - (MAP_WIDTH * minimap_size) - 10;
+            int minimap_offset_y = SCREEN_HEIGHT - (MAP_HEIGHT * minimap_size) - 10;
+            
+            // Draw semi-transparent background
+            DrawRectangle(minimap_offset_x - 5, minimap_offset_y - 5, 
+                         MAP_WIDTH * minimap_size + 10, 
+                         MAP_HEIGHT * minimap_size + 10, 
+                         (Color){0, 0, 0, 150});
+            
+            // Draw map cells
+            for (int y = 0; y < MAP_HEIGHT; y++)
+            {
+                for (int x = 0; x < MAP_WIDTH; x++)
+                {
+                    Color cell_color = (world_map[x][y] > 0) ? WHITE : DARKGRAY;
+                    DrawRectangle(minimap_offset_x + x * minimap_size, 
+                                 minimap_offset_y + y * minimap_size,
+                                 minimap_size, minimap_size, cell_color);
+                }
+            }
+            
+            // Draw player position (red dot)
+            int player_x = minimap_offset_x + (int)(player_pos[0] * minimap_size);
+            int player_y = minimap_offset_y + (int)(player_pos[1] * minimap_size);
+            DrawCircle(player_x, player_y, 3, RED);
+            
+            // Draw player direction (red line)
+            int dir_end_x = player_x + (int)(player_dir[0] * 10);
+            int dir_end_y = player_y + (int)(player_dir[1] * 10);
+            DrawLine(player_x, player_y, dir_end_x, dir_end_y, RED);
         }
 
         // Current mode indicator
