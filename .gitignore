@@ -1,0 +1,24 @@
+# Object files
+*.o
+
+# Executables
+*.exe
+raycaster
+raycaster.exe
+
+# Build artifacts
+*.out
+*.a
+*.so
+*.dll
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db

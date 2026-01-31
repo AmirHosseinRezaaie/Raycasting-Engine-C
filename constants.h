@@ -1,19 +1,61 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-// Screen size
 #define SCREEN_WIDTH  800
 #define SCREEN_HEIGHT 600
 
-// Map size (same as map.h)
 #define MAP_WIDTH  24
 #define MAP_HEIGHT 24
 
-// Size of each map cell in pixels (for 2D view)
-#define TILE_SIZE  32
+#define TILE_SIZE 32
 
-// Game states
-#define STATE_PLAY  0   // 3D play mode
-#define STATE_EDIT  1   // 2D edit mode
+#define STATE_PLAY 0
+#define STATE_EDIT 1
+
+#define TARGET_FPS 60
+
+#define MOVE_SPEED 3.0f
+#define ROTATION_SPEED 2.0f
+
+#define PLAYER_BOUNDS_MIN 0.1f
+#define PLAYER_BOUNDS_OFFSET 1.1f
+
+#define WALL_VALUE 1
+#define EMPTY_VALUE 0
+
+#define MAP_FILENAME "custom_map.txt"
+
+#define PLAYER_CIRCLE_RADIUS 8
+#define DIRECTION_LINE_LENGTH 30
+
+#define MINIMAP_CELL_SIZE 4
+#define MINIMAP_PADDING 10
+#define MINIMAP_BORDER 5
+#define MINIMAP_PLAYER_RADIUS 3
+#define MINIMAP_DIR_LENGTH 10
+
+#define PLAYER_START_X 22.0f
+#define PLAYER_START_Y 12.0f
+#define PLAYER_DIR_X -1.0f
+#define PLAYER_DIR_Y 0.0f
+#define PLAYER_PLANE_X 0.0f
+#define PLAYER_PLANE_Y 0.66f
+
+#define INFINITY_DIST 1e30f
+
+#define BRIGHTNESS_FACTOR 0.05f
+#define MIN_BRIGHTNESS 0.3f
+#define MAX_BRIGHTNESS 1.0f
+
+#define WALL_COLOR_DARK_R 101
+#define WALL_COLOR_DARK_G 67
+#define WALL_COLOR_DARK_B 33
+
+#define WALL_COLOR_LIGHT_R 160
+#define WALL_COLOR_LIGHT_G 82
+#define WALL_COLOR_LIGHT_B 45
+
+#define CEILING_COLOR (Color){135, 206, 235, 255}
+#define FLOOR_COLOR (Color){34, 139, 34, 255}
 
 #endif

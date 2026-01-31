@@ -1,25 +1,21 @@
-// player.c
+#include "constants.h"
 #include "player.h"
 
-// Global player variables - we use arrays instead of struct
 float player_pos[2];
 float player_dir[2];
 float player_plane[2];
 
-int game_state = STATE_PLAY;  // شروع در حالت بازی (3D)
+int game_state = STATE_PLAY;
+int show_help = 0;
 
 void init_player(void)
 {
-    // Start position in the middle of an empty area
-    player_pos[0] = 22.0f;
-    player_pos[1] = 12.0f;
+    player_pos[0] = PLAYER_START_X;
+    player_pos[1] = PLAYER_START_Y;
 
-    // Initially looking left (negative X direction)
-    player_dir[0] = -1.0f;
-    player_dir[1] = 0.0f;
+    player_dir[0] = PLAYER_DIR_X;
+    player_dir[1] = PLAYER_DIR_Y;
 
-    // Camera plane for ~66 degree FOV
-    // plane is perpendicular to direction
-    player_plane[0] = 0.0f;
-    player_plane[1] = 0.66f;
+    player_plane[0] = PLAYER_PLANE_X;
+    player_plane[1] = PLAYER_PLANE_Y;
 }
