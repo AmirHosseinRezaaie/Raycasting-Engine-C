@@ -6,6 +6,79 @@
 #include "map_io.h"
 #include <math.h>
 
+// Draw help screen overlay
+void draw_help_screen(void)
+{
+    // Semi-transparent dark background
+    DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){0, 0, 0, 200});
+    
+    int start_y = 80;
+    int line_height = 30;
+    
+    // Title
+    DrawText("=== RAYCASTER CONTROLS ===", SCREEN_WIDTH/2 - 200, start_y, 30, GOLD);
+    start_y += 60;
+    
+    // PLAY MODE section
+    DrawText("PLAY MODE (3D View):", 100, start_y, 24, SKYBLUE);
+    start_y += line_height + 10;
+    
+    DrawText("W / S", 120, start_y, 20, GREEN);
+    DrawText("- Move forward / backward", 220, start_y, 20, WHITE);
+    start_y += line_height;
+    
+    DrawText("A / D", 120, start_y, 20, GREEN);
+    DrawText("- Strafe left / right", 220, start_y, 20, WHITE);
+    start_y += line_height;
+    
+    DrawText("ARROW KEYS", 120, start_y, 20, GREEN);
+    DrawText("- Rotate camera left / right", 220, start_y, 20, WHITE);
+    start_y += line_height;
+    
+    DrawText("M", 120, start_y, 20, GREEN);
+    DrawText("- Switch to EDIT mode", 220, start_y, 20, WHITE);
+    start_y += line_height + 20;
+    
+    // EDIT MODE section
+    DrawText("EDIT MODE (2D Map Editor):", 100, start_y, 24, SKYBLUE);
+    start_y += line_height + 10;
+    
+    DrawText("LEFT CLICK", 120, start_y, 20, GREEN);
+    DrawText("- Place wall", 220, start_y, 20, WHITE);
+    start_y += line_height;
+    
+    DrawText("RIGHT CLICK", 120, start_y, 20, GREEN);
+    DrawText("- Remove wall", 220, start_y, 20, WHITE);
+    start_y += line_height;
+    
+    DrawText("M", 120, start_y, 20, GREEN);
+    DrawText("- Switch to PLAY mode", 220, start_y, 20, WHITE);
+    start_y += line_height + 20;
+    
+    // ANYTIME section
+    DrawText("ANYTIME:", 100, start_y, 24, SKYBLUE);
+    start_y += line_height + 10;
+    
+    DrawText("F5", 120, start_y, 20, GREEN);
+    DrawText("- Save map to file", 220, start_y, 20, WHITE);
+    start_y += line_height;
+    
+    DrawText("F9", 120, start_y, 20, GREEN);
+    DrawText("- Load map from file", 220, start_y, 20, WHITE);
+    start_y += line_height;
+    
+    DrawText("H", 120, start_y, 20, GREEN);
+    DrawText("- Toggle this help screen", 220, start_y, 20, WHITE);
+    start_y += line_height;
+    
+    DrawText("ESC", 120, start_y, 20, GREEN);
+    DrawText("- Quit game", 220, start_y, 20, WHITE);
+    start_y += line_height + 30;
+    
+    // Footer
+    DrawText("Press H to close", SCREEN_WIDTH/2 - 100, start_y, 20, YELLOW);
+}
+
 int main(void)
 {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raycaster - 2D Map Editor");
@@ -22,6 +95,10 @@ int main(void)
         // Toggle mode with M key
         if (IsKeyPressed(KEY_M))
             game_state = (game_state == STATE_PLAY) ? STATE_EDIT : STATE_PLAY;
+
+        // Toggle help screen with H key
+        if (IsKeyPressed(KEY_H))
+            show_help = !show_help;
 
         // Movement and rotation in play mode
         if (game_state == STATE_PLAY)
@@ -182,13 +259,14 @@ int main(void)
             DrawText("Right Click: Remove Wall", 10, 80, 20, RED);
             DrawText("M: PLAY mode", 10, 110, 20, RED);
             DrawText("F5: Save | F9: Load", 10, 140, 20, SKYBLUE);
+            DrawText("H: Help", 10, 170, 20, SKYBLUE);
         }
 
         else  // STATE_PLAY
         {
             render_raycast_scene();
             
-            DrawText("W A S D: Move | Arrows: Rotate | M: Edit", 10, 10, 20, YELLOW);
+            DrawText("W A S D: Move | Arrows: Rotate | M: Edit | H: Help", 10, 10, 20, YELLOW);
             
             // ===== MINI-MAP (Bottom-Right Corner) =====
             int minimap_size = 4;
@@ -202,9 +280,9 @@ int main(void)
                          (Color){0, 0, 0, 150});
             
             // Draw map cells
-            for (int y = 0; y < MAP_HEIGHT; y++)
+            for (int x = 0; x < MAP_WIDTH; x++)
             {
-                for (int x = 0; x < MAP_WIDTH; x++)
+                for (int y = 0; y < MAP_HEIGHT; y++)
                 {
                     Color cell_color = (world_map[x][y] > 0) ? WHITE : DARKGRAY;
                     DrawRectangle(minimap_offset_x + x * minimap_size, 
@@ -227,6 +305,12 @@ int main(void)
         // Current mode indicator
         const char* mode = (game_state == STATE_PLAY) ? "PLAY MODE" : "EDIT MODE";
         DrawText(mode, 10, SCREEN_HEIGHT - 30, 20, YELLOW);
+
+        // Draw help screen if toggled
+        if (show_help)
+        {
+            draw_help_screen();
+        }
 
         EndDrawing();
     }

@@ -18,4 +18,7 @@ extern int game_state;
 
 void init_player(void);
 
+// Help screen toggle
+extern int show_help;
+
 #endif

@@ -8,6 +8,8 @@ float player_plane[2];
 
 int game_state = STATE_PLAY;  // شروع در حالت بازی (3D)
 
+int show_help = 0;  // Help screen is hidden by default
+
 void init_player(void)
 {
     // Start position in the middle of an empty area
