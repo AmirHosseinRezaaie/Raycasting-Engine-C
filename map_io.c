@@ -1,15 +1,12 @@
-// map_io.c
-#include "map_io.h"
-#include "map.h"
 #include <stdio.h>
+#include "map.h"
+#include "map_io.h"
 
-bool save_map(const char* filename)
+bool save_map(const char *filename)
 {
-    FILE* file = fopen(filename, "w");
+    FILE *file = fopen(filename, "w");
     if (!file)
-    {
         return false;
-    }
 
     fprintf(file, "%d %d\n", MAP_WIDTH, MAP_HEIGHT);
 
@@ -19,9 +16,7 @@ bool save_map(const char* filename)
         {
             fprintf(file, "%d", world_map[x][y]);
             if (x < MAP_WIDTH - 1)
-            {
                 fprintf(file, " ");
-            }
         }
         fprintf(file, "\n");
     }
@@ -30,13 +25,11 @@ bool save_map(const char* filename)
     return true;
 }
 
-bool load_map(const char* filename)
+bool load_map(const char *filename)
 {
-    FILE* file = fopen(filename, "r");
+    FILE *file = fopen(filename, "r");
     if (!file)
-    {
         return false;
-    }
 
     int width, height;
     if (fscanf(file, "%d %d", &width, &height) != 2)

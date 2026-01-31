@@ -1,54 +1,52 @@
-// raycaster.c
-#include "raycaster.h"
-#include "constants.h"
-#include "player.h"
-#include "map.h"
 #include <math.h>
-#include <stdio.h>
+#include "constants.h"
+#include "map.h"
+#include "player.h"
+#include "raycaster.h"
 
 void render_raycast_scene(void)
 {
-    DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2, (Color){135, 206, 235, 255});
-    DrawRectangle(0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2, (Color){34, 139, 34, 255});
+    DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2, CEILING_COLOR);
+    DrawRectangle(0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2, FLOOR_COLOR);
 
     for (int x = 0; x < SCREEN_WIDTH; x++)
     {
-        float cameraX = 2.0f * x / (float)SCREEN_WIDTH - 1.0f;
+        float camera_x = 2.0f * x / (float)SCREEN_WIDTH - 1.0f;
         
-        float rayDirX = player_dir[0] + player_plane[0] * cameraX;
-        float rayDirY = player_dir[1] + player_plane[1] * cameraX;
+        float ray_dir_x = player_dir[0] + player_plane[0] * camera_x;
+        float ray_dir_y = player_dir[1] + player_plane[1] * camera_x;
 
-        int mapX = (int)player_pos[0];
-        int mapY = (int)player_pos[1];
+        int map_x = (int)player_pos[0];
+        int map_y = (int)player_pos[1];
 
-        float deltaDistX = (rayDirX == 0) ? 1e30f : fabsf(1.0f / rayDirX);
-        float deltaDistY = (rayDirY == 0) ? 1e30f : fabsf(1.0f / rayDirY);
+        float delta_dist_x = (ray_dir_x == 0) ? INFINITY_DIST : fabsf(1.0f / ray_dir_x);
+        float delta_dist_y = (ray_dir_y == 0) ? INFINITY_DIST : fabsf(1.0f / ray_dir_y);
 
-        float sideDistX;
-        float sideDistY;
-        int stepX;
-        int stepY;
+        float side_dist_x;
+        float side_dist_y;
+        int step_x;
+        int step_y;
 
-        if (rayDirX < 0)
+        if (ray_dir_x < 0)
         {
-            stepX = -1;
-            sideDistX = (player_pos[0] - (float)mapX) * deltaDistX;
+            step_x = -1;
+            side_dist_x = (player_pos[0] - (float)map_x) * delta_dist_x;
         }
         else
         {
-            stepX = 1;
-            sideDistX = ((float)mapX + 1.0f - player_pos[0]) * deltaDistX;
+            step_x = 1;
+            side_dist_x = ((float)map_x + 1.0f - player_pos[0]) * delta_dist_x;
         }
 
-        if (rayDirY < 0)
+        if (ray_dir_y < 0)
         {
-            stepY = -1;
-            sideDistY = (player_pos[1] - (float)mapY) * deltaDistY;
+            step_y = -1;
+            side_dist_y = (player_pos[1] - (float)map_y) * delta_dist_y;
         }
         else
         {
-            stepY = 1;
-            sideDistY = ((float)mapY + 1.0f - player_pos[1]) * deltaDistY;
+            step_y = 1;
+            side_dist_y = ((float)map_y + 1.0f - player_pos[1]) * delta_dist_y;
         }
 
         int hit = 0;
@@ -56,77 +54,66 @@ void render_raycast_scene(void)
 
         while (hit == 0)
         {
-            if (sideDistX < sideDistY)
+            if (side_dist_x < side_dist_y)
             {
-                sideDistX += deltaDistX;
-                mapX += stepX;
+                side_dist_x += delta_dist_x;
+                map_x += step_x;
                 side = 0;
             }
             else
             {
-                sideDistY += deltaDistY;
-                mapY += stepY;
+                side_dist_y += delta_dist_y;
+                map_y += step_y;
                 side = 1;
             }
 
-            if (world_map[mapX][mapY] > 0)
-            {
+            if (world_map[map_x][map_y] > 0)
                 hit = 1;
-            }
         }
 
-        float perpWallDist;
+        float perp_wall_dist;
         
         if (side == 0)
-        {
-            perpWallDist = (sideDistX - deltaDistX);
-        }
+            perp_wall_dist = (side_dist_x - delta_dist_x);
         else
-        {
-            perpWallDist = (sideDistY - deltaDistY);
-        }
+            perp_wall_dist = (side_dist_y - delta_dist_y);
 
-        int lineHeight = (int)(SCREEN_HEIGHT / perpWallDist);
+        int line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
 
-        int drawStart = -lineHeight / 2 + SCREEN_HEIGHT / 2;
-        if (drawStart < 0)
-        {
-            drawStart = 0;
-        }
+        int draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
+        if (draw_start < 0)
+            draw_start = 0;
 
-        int drawEnd = lineHeight / 2 + SCREEN_HEIGHT / 2;
-        if (drawEnd >= SCREEN_HEIGHT)
-        {
-            drawEnd = SCREEN_HEIGHT - 1;
-        }
+        int draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
+        if (draw_end >= SCREEN_HEIGHT)
+            draw_end = SCREEN_HEIGHT - 1;
 
-        // Calculate brightness based on distance (0.3 to 1.0)
-        float brightness = 1.0f / (1.0f + perpWallDist * 0.05f);
-        if (brightness < 0.3f) brightness = 0.3f;
-        if (brightness > 1.0f) brightness = 1.0f;
+        float brightness = 1.0f / (1.0f + perp_wall_dist * BRIGHTNESS_FACTOR);
+        if (brightness < MIN_BRIGHTNESS)
+            brightness = MIN_BRIGHTNESS;
+        if (brightness > MAX_BRIGHTNESS)
+            brightness = MAX_BRIGHTNESS;
         
-        Color wallColor;
+        Color wall_color;
         if (side == 1)
         {
-            wallColor = (Color){
-                (unsigned char)(101 * brightness),
-                (unsigned char)(67 * brightness),
-                (unsigned char)(33 * brightness),
+            wall_color = (Color){
+                (unsigned char)(WALL_COLOR_DARK_R * brightness),
+                (unsigned char)(WALL_COLOR_DARK_G * brightness),
+                (unsigned char)(WALL_COLOR_DARK_B * brightness),
                 255
             };
         }
         else
         {
-            wallColor = (Color){
-                (unsigned char)(160 * brightness),
-                (unsigned char)(82 * brightness),
-                (unsigned char)(45 * brightness),
+            wall_color = (Color){
+                (unsigned char)(WALL_COLOR_LIGHT_R * brightness),
+                (unsigned char)(WALL_COLOR_LIGHT_G * brightness),
+                (unsigned char)(WALL_COLOR_LIGHT_B * brightness),
                 255
             };
         }
 
-        DrawLine(x, drawStart, x, drawEnd, wallColor);
-
+        DrawLine(x, draw_start, x, draw_end, wall_color);
     }
-
 }
