@@ -1,24 +1,36 @@
-# Object files
+cat > .gitignore << 'EOF'
+# Compiled Object files
 *.o
+*.obj
 
 # Executables
 *.exe
-raycaster
-raycaster.exe
-
-# Build artifacts
 *.out
-*.a
-*.so
-*.dll
+raycaster
 
-# IDE and editor files
+# Custom maps (user generated)
+custom_map.txt
+*.txt
+
+# IDE settings
 .vscode/
 .idea/
-*.swp
-*.swo
-*~
+*.code-workspace
 
 # OS files
 .DS_Store
 Thumbs.db
+
+# Backup files
+*~
+*.bak
+*.swp
+
+# Build directory
+build/
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+EOF
