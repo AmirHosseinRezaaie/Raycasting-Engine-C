@@ -1,5 +1,6 @@
+#include <stdio.h>
 #include <math.h>
-#include "raylib.h"
+#include <raylib.h>
 #include "constants.h"
 #include "map.h"
 #include "map_io.h"
@@ -176,7 +177,7 @@ int main(void)
                     printf("Failed to load map!\n");
             }
             
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
             {
                 int mouse_x = GetMouseX();
                 int mouse_y = GetMouseY();
@@ -185,10 +186,20 @@ int main(void)
                 
                 if (map_x >= 0 && map_x < MAP_WIDTH && map_y >= 0 && map_y < MAP_HEIGHT)
                 {
-                    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-                        world_map[map_x][map_y] = WALL_VALUE;
-                    else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
-                        world_map[map_x][map_y] = EMPTY_VALUE;
+                    int player_cell_x = (int)player_pos[0];
+                    int player_cell_y = (int)player_pos[1];
+                    
+                    if (map_x == player_cell_x && map_y == player_cell_y)
+                    {
+                        printf("Cannot place/remove wall on player position! (%d, %d)\n", map_x, map_y);
+                    }
+                    else
+                    {
+                        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+                            world_map[map_x][map_y] = WALL_VALUE;
+                        else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+                            world_map[map_x][map_y] = EMPTY_VALUE;
+                    }
                 }
             }
         }

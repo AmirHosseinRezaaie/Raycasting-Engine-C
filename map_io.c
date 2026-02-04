@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include <math.h>
 #include "map.h"
 #include "map_io.h"
+#include "player.h"
+#include "constants.h"
 
 bool save_map(const char *filename)
 {
@@ -57,5 +60,18 @@ bool load_map(const char *filename)
     }
 
     fclose(file);
+
+    int player_cell_x = (int)player_pos[0];
+    int player_cell_y = (int)player_pos[1];
+
+    if (player_cell_x >= 0 && player_cell_x < MAP_WIDTH &&
+        player_cell_y >= 0 && player_cell_y < MAP_HEIGHT &&
+        world_map[player_cell_x][player_cell_y] != EMPTY_VALUE)
+    {
+        world_map[player_cell_x][player_cell_y] = EMPTY_VALUE;
+        printf("Note: Cleared wall at player position (%d, %d)\n", 
+            player_cell_x, player_cell_y);
+    }
+
     return true;
 }
